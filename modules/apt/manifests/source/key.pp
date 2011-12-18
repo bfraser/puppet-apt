@@ -1,9 +1,9 @@
 define apt::source::key ($ensure) {
   include apt
 
-  file { "/root/apt/keys/${keyid}.asc":
+  file { "/root/apt/keys/${name}.asc":
     ensure	=> file,
-    source	=> "puppet:///modules/apt/keys/${keyid}.asc",
+    source	=> "puppet:///modules/apt/keys/${name}.asc",
     owner	=> root,
     group	=> root,
     mode	=> 644,
@@ -13,14 +13,14 @@ define apt::source::key ($ensure) {
   case $ensure {
     present: {
       exec { "apt-key present $name":
-        command	=> "/usr/bin/apt-key add /root/apt/keys/${keyid}.asc",
-        unless	=> "/usr/bin/apt-key list | /bin/grep -c $keyid",
+        command	=> "/usr/bin/apt-key add /root/apt/keys/${name}.asc",
+        unless	=> "/usr/bin/apt-key list | /bin/grep -c $name",
       }
     }
     absent: {
       exec { "apt-key absent $name":
-        command => "/usr/bin/apt-key del $keyid",
-        onlyif	=> "/usr/bin/apt-key list | /bin/grep -c $keyid",
+        command => "/usr/bin/apt-key del $name",
+        onlyif	=> "/usr/bin/apt-key list | /bin/grep -c $name",
       }
     }
     default: {
