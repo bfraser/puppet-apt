@@ -9,7 +9,7 @@ define apt::source ($keys, $ensure) {
     mode	=> 644,
   }
 
-  apt::source::key { $keys:
+  apt::source::key { [ $keys ]:
     ensure	=> $ensure,
     before	=> File["/etc/apt/sources.list.d/${name}.list"],
   }
